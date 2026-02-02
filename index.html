@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar número</title>
+    <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon">
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Italianno&display=swap');
+
+        * {
+            margin: 0;
+        }
+
+        body {
+            font: 1em normal arial, helvetica, sans-serif;
+            background-color: #f5e7e7;
+        }
+
+        header {
+            background-image: linear-gradient(to bottom, #010157, #000000);
+            color: #ffffff;
+            text-align: center;
+            padding: 40px;
+            text-shadow: #00000086;
+        }
+
+        header > h1 {
+            font: 3em;
+        }
+
+        article#conteudo {
+            display: block;
+            background-color: #ffffff;
+            height: 50vw;
+            width: 50vw;
+            max-width: 409px;
+            max-height: 409px;
+            min-width: 350px;
+            min-height: 350px;
+            border-radius: 10px;
+            margin: auto;
+            margin-top: 5vw;
+            box-shadow: 3px 3px 5px #0000008e;
+        }
+
+        h1#caixa {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px 10px 0px 0px;
+            background-image: linear-gradient(to bottom, #270180, #0b0024);
+            color: #f87801;
+        }
+
+        p {
+            margin-top: 10%;
+            text-align: center;
+            color: #000074;
+            font: bold 1.8em 'Bebas Neue', Arial, sans-serif;
+        }
+
+        input {
+            background-color: #fafafa;
+            margin-left: 5%;
+            margin-top: 7%;
+            height: 5vw;
+            max-height: 50px;
+            width: 90%;
+            text-align: center;
+            border-radius: 30px;
+        }
+
+        button { 
+            margin-top: 10%;
+            margin-left: 25%;
+            height: 20%;
+            width: 45%;
+            max-width: 170px;
+            max-height: 45px;
+            border-radius: 30px;
+            background-image: linear-gradient(to bottom, #290086, #270180);
+            color: #ffffff;
+            font-size: 120%;
+        }
+
+        p#status {
+            text-align: left;
+            font: 1.5em 'Bebas Neue', sans-serif;
+            margin: 10px;
+            color: #fa7c06;
+        }
+    </style>
+</head>
+<body>
+    <header><h1>SITE SOMENTE PARA ATUALIZAR Nº PROCESSO</h1></header>
+
+    <main>
+        <article id="conteudo">
+            <form id="meuFormulario">
+                <h1 id="caixa">Mota - Área 4.0</h1>
+                <p>Insira o Número do Processo:</p>
+                <input type="text" id="numero" placeholder="ex: 0000000-00.0000.0.00.0000" required>                <button type="submit">Enviar para o n8n</button>
+            </form>
+            <p id="status"></p>
+        </article>
+    </main>
+
+<script>
+    const formulario = document.getElementById('meuFormulario');
+const statusMsg = document.getElementById('status');
+
+formulario.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Impede o site de recarregar
+
+    // Coleta os dados dos campos
+    const dados = {
+        numero: document.getElementById('numero').value,
+        data_envio: new Date().toISOString()
+    };
+
+    statusMsg.innerText = "Enviando...";
+
+    try {
+        const response = await fetch('https://n8n.vazinovacao.com.br/webhook-test/planilha-advice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dados) // Transforma o objeto JS em texto JSON
+        });
+
+        if (response.ok) {
+            statusMsg.innerText = "Success: Dados atualizados com sucesso.";
+            formulario.reset();
+        } else {
+            statusMsg.innerText = "Erro no servidor: " + response.status;
+        }
+    } catch (erro) {
+        statusMsg.innerText = "Erro de conexão: " + erro.message;
+    }
+});
+</script>
+</body>
+</html>
