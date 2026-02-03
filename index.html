@@ -121,7 +121,7 @@ formulario.addEventListener('submit', async (e) => {
     statusMsg.innerText = "Enviando...";
 
     try {
-        const response = await fetch('https://n8n.vazinovacao.com.br/webhook-test/planilha-advice', {
+        const response = await fetch('https://n8n.vazinovacao.com.br/webhook/planilha-advice', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
